@@ -1,17 +1,11 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
 from underthesea import word_tokenize, pos_tag, sent_tokenize
-import warnings
 from gensim import corpora, models, similarities
-import jieba
 import re
 import pickle
 from sklearn.metrics.pairwise import cosine_similarity
-from scipy.sparse import vstack
-from sklearn.feature_extraction.text import TfidfVectorizer
 import regex
 import emoji
  
