@@ -63,79 +63,79 @@ elif choice == 'Build Project':
     #st.image('data/project2/image/load_data.png', use_column_width=True)
 elif choice == 'Recommendation System Prediction':
     st.write("""# Recommendation System""")
-
-    df_users = df_ratings[['user_id','user']].drop_duplicates().set_index('user_id')
-    st.write('### Dữ liệu Ratings demo')
-    st.write(df_ratings.sample(5))
-    st.write('### Dữ liệu Products demo')
-    st.write(df_products.sample(5))
-    st.write('### Dữ liệu Users demo')
-    st.write(df_users.sample(5))
-
-    st.write('### 1.Đề xuất cho khách hàng vãng lai mới')
-    st.write('##### Đưa ra 10 đề xuất cho với các sản phẩm có số lượng rating nhiều nhất và trung bình rating trên 4.5')
-    list_products1 = recommend_products(df_ratings, df_products,surprise_model, number_of_recommen=5).sort_values(by="price").set_index('product_id')
-    st.write(list_products1)
-
-    st.write('### 2. Đề xuất tìm kiếm sản phẩm cho khách hàng')
-    input2 = st.text_input('Từ khóa tìm kiếm: ')
-    button2_timkiem =st.button('Tìm kiếm')
-    if button2_timkiem:
-        list_products2 = recommend_products(df_ratings, df_products,surprise_model, str_search=input2, number_of_recommen=5).set_index('product_id')
-        st.write(list_products2)
-
-    st.write('### 3. Gọi ý cho khách hàng có lịch sử tìm kiếm')
-    st.session_state.user_history = ['Bộ nỉ nam năng động tay dài', 'Bộ nỉ dày nam nữ mặc siêu ấm, set nỉ nam có mũ, quần áo thể thao thu đông cực ấm', ]
-
-    input3 = st.text_input('Thêm lịch sử tìm kiếm: ')
-    button3 = st.button('Thêm')
-    if button3:
-        st.session_state.user_history.append(input3)
-        st.session_state.user_history = st.session_state.user_history[-5:]
-        search_string =  ', '.join(st.session_state.user_history)
-        st.write('Lịch sử tìm kiếm của khách hàng:')
-        st.write(search_string)
-        list_products3 = recommend_products(df_ratings, df_products,surprise_model, str_search=search_string, number_of_recommen=5).set_index('product_id')
-        st.write(list_products3)
-
-
-    st.write('### 4. Đề xuất cho khách hàng dựa vào rating')
-    input4 = st.text_input('Nhập Mã số khách hàng: ')
-    button4 = st.button('Random user')
-
-    if input4:
-        input4 = int(input4)
-        st.write('Đề xuất sản phẩm cho khách hàng id: ', input4)
-        list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=input4, number_of_recommen=5).set_index('product_id')
-        st.write(list_products4)
-    if button4:
-        user_id4 = df_ratings.sample(1)['user_id'].values[0]
-        st.write('Đề xuất sản phẩm cho khách hàng id: ', user_id4)
-        list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=user_id4, number_of_recommen=5).set_index('product_id')
-        st.write(list_products4)
-
-
-    st.write('### 5. Đề xuất cho khách hàng dựa vào sản phẩm đang xem')
-    product_id5 = st.text_input('Nhập mã sản phẩm: ', key='product_id')
-    button5 = st.button('Random product')
-
-
-    if product_id5:
-        product_id5 = int(product_id5)
-        product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
-        st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
-
-        st.write("Sản phẩm tương tự")
-        list_products5 = recommend_products(df_ratings, df_products,surprise_model, user_id=None, str_search=product_str, number_of_recommen=5)
-        st.write(list_products5)
-    if button5:
-        product_id5 = df_products.sample(1)['product_id'].values[0]
-        st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
-        product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
-        st.write("Sản phẩm tương tự")
-        list_products5 = recommend_products(df_ratings, df_products,surprise_model, user_id=None, str_search=product_str, number_of_recommen=5)
-        st.write(list_products5)
-
+    #
+    # df_users = df_ratings[['user_id','user']].drop_duplicates().set_index('user_id')
+    # st.write('### Dữ liệu Ratings demo')
+    # st.write(df_ratings.sample(5))
+    # st.write('### Dữ liệu Products demo')
+    # st.write(df_products.sample(5))
+    # st.write('### Dữ liệu Users demo')
+    # st.write(df_users.sample(5))
+    #
+    # st.write('### 1.Đề xuất cho khách hàng vãng lai mới')
+    # st.write('##### Đưa ra 10 đề xuất cho với các sản phẩm có số lượng rating nhiều nhất và trung bình rating trên 4.5')
+    # list_products1 = recommend_products(df_ratings, df_products,surprise_model, number_of_recommen=5).sort_values(by="price").set_index('product_id')
+    # st.write(list_products1)
+    #
+    # st.write('### 2. Đề xuất tìm kiếm sản phẩm cho khách hàng')
+    # input2 = st.text_input('Từ khóa tìm kiếm: ')
+    # button2_timkiem =st.button('Tìm kiếm')
+    # if button2_timkiem:
+    #     list_products2 = recommend_products(df_ratings, df_products,surprise_model, str_search=input2, number_of_recommen=5).set_index('product_id')
+    #     st.write(list_products2)
+    #
+    # st.write('### 3. Gọi ý cho khách hàng có lịch sử tìm kiếm')
+    # st.session_state.user_history = ['Bộ nỉ nam năng động tay dài', 'Bộ nỉ dày nam nữ mặc siêu ấm, set nỉ nam có mũ, quần áo thể thao thu đông cực ấm', ]
+    #
+    # input3 = st.text_input('Thêm lịch sử tìm kiếm: ')
+    # button3 = st.button('Thêm')
+    # if button3:
+    #     st.session_state.user_history.append(input3)
+    #     st.session_state.user_history = st.session_state.user_history[-5:]
+    #     search_string =  ', '.join(st.session_state.user_history)
+    #     st.write('Lịch sử tìm kiếm của khách hàng:')
+    #     st.write(search_string)
+    #     list_products3 = recommend_products(df_ratings, df_products,surprise_model, str_search=search_string, number_of_recommen=5).set_index('product_id')
+    #     st.write(list_products3)
+    #
+    #
+    # st.write('### 4. Đề xuất cho khách hàng dựa vào rating')
+    # input4 = st.text_input('Nhập Mã số khách hàng: ')
+    # button4 = st.button('Random user')
+    #
+    # if input4:
+    #     input4 = int(input4)
+    #     st.write('Đề xuất sản phẩm cho khách hàng id: ', input4)
+    #     list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=input4, number_of_recommen=5).set_index('product_id')
+    #     st.write(list_products4)
+    # if button4:
+    #     user_id4 = df_ratings.sample(1)['user_id'].values[0]
+    #     st.write('Đề xuất sản phẩm cho khách hàng id: ', user_id4)
+    #     list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=user_id4, number_of_recommen=5).set_index('product_id')
+    #     st.write(list_products4)
+    #
+    #
+    # st.write('### 5. Đề xuất cho khách hàng dựa vào sản phẩm đang xem')
+    # product_id5 = st.text_input('Nhập mã sản phẩm: ', key='product_id')
+    # button5 = st.button('Random product')
+    #
+    #
+    # if product_id5:
+    #     product_id5 = int(product_id5)
+    #     product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
+    #     st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
+    #
+    #     st.write("Sản phẩm tương tự")
+    #     list_products5 = recommend_products(df_ratings, df_products,surprise_model, user_id=None, str_search=product_str, number_of_recommen=5)
+    #     st.write(list_products5)
+    # if button5:
+    #     product_id5 = df_products.sample(1)['product_id'].values[0]
+    #     st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
+    #     product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
+    #     st.write("Sản phẩm tương tự")
+    #     list_products5 = recommend_products(df_ratings, df_products,surprise_model, user_id=None, str_search=product_str, number_of_recommen=5)
+    #     st.write(list_products5)
+    #
 
     # st.write("##### Đề xuất sản phẩm cho khách hàng vãng lai - chưa có lịch sử tìm kiếm")
     # list_products = recommend_products_collaborativefiltering(0, df_ratings, df_products, n=5)
@@ -183,7 +183,7 @@ elif choice == 'Recommendation System Prediction':
 
 
 
-    
+
     
     
     
