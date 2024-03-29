@@ -7,7 +7,7 @@ from joblib import load
 import io
 
 
-@st.cache_data
+
 def load_gensim_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
 
@@ -33,7 +33,7 @@ def load_data_ratings():
     return df_ratings
 
 
-surprise_model = load_gensim_model(6)
+
 
 st.title("Đồ Án Tốt Nghiệp Data Science - Machine Learning")
 st.write("""### Thành viên nhóm:
@@ -68,6 +68,7 @@ elif choice == 'Recommendation System Prediction':
     df_products = load_data_products()
     df_ratings = load_data_ratings()
     df_users = df_ratings[['user_id', 'user']].drop_duplicates().set_index('user_id')
+    surprise_model = load_gensim_model(6)
     st.write('### Dữ liệu Ratings demo')
     st.write(df_ratings.sample(5))
     st.write('### Dữ liệu Products demo')
