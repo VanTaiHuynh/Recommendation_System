@@ -62,7 +62,7 @@ elif choice == 'Build Project':
     st.write("""### 1. Load dữ liệu""")
     #st.image('data/project2/image/load_data.png', use_column_width=True)
 elif choice == 'Recommendation System Prediction':
-    # st.write("""# Recommendation System""")
+    st.write("""# Recommendation System""")
     #
     # df_users = df_ratings[['user_id','user']].drop_duplicates().set_index('user_id')
     # st.write('### Dữ liệu Ratings demo')
