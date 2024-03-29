@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+underthesea
+gensim
+jieba
+pickle
+scipy
+regex
+emoji
+streamlit
+seaborn
+joblib
