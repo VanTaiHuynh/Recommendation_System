@@ -7,7 +7,7 @@ from joblib import load
 import io
 
 @st.cache_data
-def load_gensim_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
+def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
 
     # Concatenate each part
@@ -30,7 +30,7 @@ def load_data_ratings():
     df_ratings = pd.read_csv('data/project2/Products_ThoiTrangNam_rating_cleaned.csv')
     return df_ratings
 
-surprise_model = load_gensim_model(6)
+surprise_model = load_SVD_model(2)
 df_products = load_data_products()
 df_ratings = load_data_ratings()    
 st.title("Đồ Án Tốt Nghiệp Data Science - Machine Learning")
