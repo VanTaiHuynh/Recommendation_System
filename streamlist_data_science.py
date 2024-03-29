@@ -1,7 +1,5 @@
 import streamlit as st 
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from utility import *
 from joblib import load
 import io
@@ -33,6 +31,7 @@ def load_data_ratings():
 surprise_model = load_SVD_model(2)
 df_products = load_data_products()
 df_ratings = load_data_ratings()    
+st.image('data/project2/images/topic.png', caption='Shoppe')
 st.title("Đồ Án Tốt Nghiệp Data Science - Machine Learning")
 st.write("""### Thành viên nhóm:
 - Huỳnh Văn Tài
@@ -40,6 +39,7 @@ st.write("""### Thành viên nhóm:
 menu = ["Home", "Build Project" ,"Recommendation System Prediction"]
 choice = st.sidebar.selectbox('Danh mục', menu)
 if choice == 'Home': 
+    
     st.write("""# Đề tài: Xây dựng hệ thống đề xuất sản phẩm cho khách hàng cho sàn thương mại điện tử Shoppe""")   
     st.write("""### Mục tiêu:
     - Xây dựng hệ thống đề xuất sản phẩm cho khách hàng
@@ -122,6 +122,10 @@ elif choice == 'Build Project':
     st.write('#### Thực hiện tìm kiếm sản phẩm cho từ khóa "đồ thể thao"')
     st.image('data/project2/images/cosine_predict_result.png', caption='Cosine result')
     st.image('data/project2/images/cosine_predict_wordcloud.png', caption='Content-based Cosine Filtering')
+
+    st.write("""### Nhận xét: 
+    - Cả 2 Mô hình đều cho được kết quả tương đối khả quan và phù hợp với từ khóa tìm kiếm => kết hợp cả 2 model để đề xuất sản phẩm cho khách hàng dựa trên score của 2 model""")
+
 
 
 

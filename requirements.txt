@@ -1,14 +1,11 @@
 numpy
 pandas
-matplotlib
 scikit-learn
 underthesea
 gensim
-jieba
 scipy
 regex
 emoji
 streamlit
-seaborn
 joblib
 scikit-surprise
