@@ -11,4 +11,4 @@ emoji
 streamlit
 seaborn
 joblib
-surprise
+scikit-surprise
