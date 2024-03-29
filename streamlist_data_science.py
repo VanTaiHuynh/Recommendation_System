@@ -60,7 +60,7 @@ if choice == 'Home':
 elif choice == 'Build Project':
     st.write("""# Build Project""")
     st.write("""### 1. Load dữ liệu""")
-    st.image('data/project2/image/load_data.png', use_column_width=True)
+    #st.image('data/project2/image/load_data.png', use_column_width=True)
 elif choice == 'Recommendation System Prediction':
     st.write("""# Recommendation System""")
     
