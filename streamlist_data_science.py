@@ -151,8 +151,9 @@ elif choice == 'Recommendation System Prediction':
     input2 = st.text_input('Từ khóa tìm kiếm: ')
     button2_timkiem =st.button('Tìm kiếm')
     if button2_timkiem:
-        list_products2 = recommend_products(df_ratings, df_products,surprise_model, str_search=input2, number_of_recommen=5).set_index('product_id')
-        st.write(list_products2)
+        if input2:
+            list_products2 = recommendation_cosin(input2, df_products, df_ratings, surprise_model, number_of_recommen=5).set_index('product_id') [['product_id','product_name', 'price', 'description']]
+            st.write(list_products2)
 
     st.write('### 3. Gọi ý cho khách hàng có lịch sử tìm kiếm')
     st.session_state.user_history = ['Bộ nỉ nam năng động tay dài', 'Bộ nỉ dày nam nữ mặc siêu ấm, set nỉ nam có mũ, quần áo thể thao thu đông cực ấm', ]
