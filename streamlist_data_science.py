@@ -152,7 +152,7 @@ elif choice == 'Recommendation System Prediction':
     button2_timkiem =st.button('Tìm kiếm')
     if button2_timkiem:
         if input2:
-            list_products2 = recommendation_cosin(input2, df_products, df_ratings, surprise_model, number_of_recommen=5).set_index('product_id') [['product_id','product_name', 'price', 'description']]
+            list_products2 = recommendation_cosin(input2, df_products, number_of_recommen=5).set_index('product_id') [['product_id','product_name', 'price', 'description']]
             st.write(list_products2)
 
     st.write('### 3. Gọi ý cho khách hàng có lịch sử tìm kiếm')
@@ -167,7 +167,7 @@ elif choice == 'Recommendation System Prediction':
         search_string =  ', '.join(st.session_state.user_history)
         st.write('Lịch sử tìm kiếm của khách hàng:')
         st.write(search_string)
-        list_products3 = recommend_products(df_ratings, df_products,surprise_model, str_search=search_string, number_of_recommen=5).set_index('product_id')
+        list_products3 = recommendation_cosin(search_string, df_products, number_of_recommen=5).set_index('product_id')
         st.write(list_products3)
     
     
@@ -178,12 +178,12 @@ elif choice == 'Recommendation System Prediction':
     if input4: 
         input4 = int(input4)
         st.write('Đề xuất sản phẩm cho khách hàng id: ', input4)
-        list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=input4, number_of_recommen=5).set_index('product_id')
+        list_products4 = recommend_products_collaborativefiltering(int(input4),data_ratings, data_products, surprise_model, 5).set_index('product_id')
         st.write(list_products4)
     if button4:
         user_id4 = df_ratings.sample(1)['user_id'].values[0]
         st.write('Đề xuất sản phẩm cho khách hàng id: ', user_id4)
-        list_products4 = recommend_products(df_ratings, df_products,surprise_model, user_id=user_id4, number_of_recommen=5).set_index('product_id')
+        list_products4 = recommend_products_collaborativefiltering(user_id4,data_ratings, data_products, surprise_model, 5).set_index('product_id')
         st.write(list_products4)
 
 
