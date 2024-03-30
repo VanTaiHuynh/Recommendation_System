@@ -136,7 +136,7 @@ elif choice == 'Build Project':
     st.write('Root Mean Square Error (RMSE) của mô hình ALS')
     st.image('data/images/ALS_RMSE.png', caption='ALS RMSE')
     st.write('#### Baseline Model')
-    st.write('Root Mean Square Error (RMSE) của mô hình SVD Baseline')
+    st.write('Root Mean Square Error (RMSE) của mô hình Baseline')
     data_baseline = {
     'Metric': ['RMSE (testset)', 'MAE (testset)', 'Fit time', 'Test time'],
     'Fold 1': [0.8606, 0.5622, 2.35, 1.62],
@@ -149,8 +149,8 @@ elif choice == 'Build Project':
     df_baseline = pd.DataFrame(data_baseline)
     st.write(df_baseline)
     st.write("""### Nhận xét:  
-    - Mô hình SVD cho kết quả tốt hơn mô hình ALS với RMSE ~0.85
-    - Lựa chọn Surprise SVD model để xây dựng hệ thống đề xuất sản phẩm theo rating""")
+    - Mô hình Baseline cho kết quả tốt hơn mô hình ALS với RMSE ~0.85
+    - Lựa chọn Surprise Baseline model để xây dựng hệ thống đề xuất sản phẩm theo rating""")
     st.write("""### 3. Xây dựng mô hình Content-based Cosine Filtering""")
     st.write('#### Mô hình Content-based Cosine Filtering')
     st.write('#### Thực hiện tìm kiếm sản phẩm cho từ khóa "đồ thể thao"')
