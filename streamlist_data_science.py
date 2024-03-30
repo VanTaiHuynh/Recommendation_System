@@ -4,7 +4,7 @@ from utility import *
 from joblib import load
 import io
 
-
+@st.cache_data
 def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
 
@@ -17,17 +17,20 @@ def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_Co
     model = load(io.BytesIO(full_model_bytes))
     return model
 
-
+@st.cache_data
 def load_data_products():
     df_products = pd.read_csv('data/project2/Products_ThoiTrangNam_cleaned_part1.csv')
     df_products_2 = pd.read_csv('data/project2/Products_ThoiTrangNam_cleaned_part2.csv')
     df_products = pd.concat([df_products, df_products_2], axis=0)
     return df_products
+@st.cache_data
 def load_data_ratings():
     df_ratings = pd.read_csv('data/project2/Products_ThoiTrangNam_rating_cleaned.csv')
     return df_ratings
 
-
+surprise_model = load_SVD_model(2)
+df_products = load_data_products()
+df_ratings = load_data_ratings()    
 st.image('data/project2/images/topic.png', caption='Shoppe')
 st.title("Đồ Án Tốt Nghiệp Data Science - Machine Learning")
 st.write("""### Thành viên nhóm:
@@ -130,9 +133,7 @@ elif choice == 'Build Project':
 
 elif choice == 'Recommendation System Prediction':
     st.write("""# Recommendation System""")
-    surprise_model = load_SVD_model(2)
-    df_products = load_data_products()
-    df_ratings = load_data_ratings()    
+    
     df_users = df_ratings[['user_id','user']].drop_duplicates().set_index('user_id')
     st.write('### Dữ liệu Ratings demo')
     st.write(df_ratings.sample(5))
@@ -151,7 +152,7 @@ elif choice == 'Recommendation System Prediction':
     button2_timkiem =st.button('Tìm kiếm')
     if button2_timkiem:
         if input2:
-            list_products2 = recommendation_gensim(input2, df_products, 5).set_index('product_id') [['product_name', 'price', 'description']]
+            list_products2 = recommendation_cosin(input2, df_products, 5).set_index('product_id') [['product_name', 'price', 'description']]
             st.write(list_products2)
 
     st.write('### 3. Gợi ý cho khách hàng có lịch sử tìm kiếm')
@@ -168,7 +169,7 @@ elif choice == 'Recommendation System Prediction':
         search_string =  ', '.join(st.session_state.user_history)
         st.write('Lịch sử tìm kiếm của khách hàng:')
         st.write(search_string)
-        list_products3 = recommendation_gensim(search_string, df_products, 5).set_index('product_id')[['product_name', 'price', 'description']]
+        list_products3 = recommendation_cosin(search_string, df_products, 5).set_index('product_id')[['product_name', 'price', 'description']]
         st.write(list_products3)
     
     
@@ -199,12 +200,12 @@ elif choice == 'Recommendation System Prediction':
         st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
         
         st.write("Sản phẩm tương tự")
-        list_products5 = recommendation_gensim(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
+        list_products5 = recommendation_cosin(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
         st.write(list_products5)
     if button5:
         product_id5 = df_products.sample(1)['product_id'].values[0]
         st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
         product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
         st.write("Sản phẩm tương tự")
-        list_products5 = recommendation_gensim(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
+        list_products5 = recommendation_cosin(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
         st.write(list_products5)
