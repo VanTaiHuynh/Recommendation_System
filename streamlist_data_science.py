@@ -144,7 +144,7 @@ elif choice == 'Recommendation System Prediction':
 
     st.write('### 1.Đề xuất cho khách hàng vãng lai mới')
     st.write('##### Đưa ra 10 đề xuất cho với các sản phẩm có số lượng rating nhiều nhất và trung bình rating trên 4.5')
-    list_products1 = recommend_products(df_ratings, df_products,surprise_model, number_of_recommen=5).sort_values(by="price").set_index('product_id')
+    list_products1 = recommend_products(df_ratings, df_products,surprise_model, 5).sort_values(by="price").set_index('product_id')
     st.write(list_products1)
 
     st.write('### 2. Đề xuất tìm kiếm sản phẩm cho khách hàng')
@@ -152,12 +152,14 @@ elif choice == 'Recommendation System Prediction':
     button2_timkiem =st.button('Tìm kiếm')
     if button2_timkiem:
         if input2:
-            list_products2 = recommendation_cosin(input2, df_products, number_of_recommen=5).set_index('product_id') [['product_name', 'price', 'description']]
+            list_products2 = recommendation_cosin(input2, df_products, 5).set_index('product_id') [['product_name', 'price', 'description']]
             st.write(list_products2)
 
-    st.write('### 3. Gọi ý cho khách hàng có lịch sử tìm kiếm')
+    st.write('### 3. Gợi ý cho khách hàng có lịch sử tìm kiếm')
     st.session_state.user_history = ['Bộ nỉ nam năng động tay dài', 'Bộ nỉ dày nam nữ mặc siêu ấm, set nỉ nam có mũ, quần áo thể thao thu đông cực ấm', ]
-    
+    st.write('Lịch sử tìm kiếm của khách hàng: ')
+    search_string =  ', '.join(st.session_state.user_history)
+    st.write(search_string)
     input3 = st.text_input('Thêm lịch sử tìm kiếm: ')
     button3 = st.button('Thêm')
     if button3:
@@ -167,7 +169,7 @@ elif choice == 'Recommendation System Prediction':
         search_string =  ', '.join(st.session_state.user_history)
         st.write('Lịch sử tìm kiếm của khách hàng:')
         st.write(search_string)
-        list_products3 = recommendation_cosin(search_string, df_products, number_of_recommen=5).set_index('product_id')[['product_name', 'price', 'description']]
+        list_products3 = recommendation_cosin(search_string, df_products, 5).set_index('product_id')[['product_name', 'price', 'description']]
         st.write(list_products3)
     
     
@@ -178,12 +180,12 @@ elif choice == 'Recommendation System Prediction':
     if input4: 
         input4 = int(input4)
         st.write('Đề xuất sản phẩm cho khách hàng id: ', input4)
-        list_products4 = recommend_products_collaborativefiltering(int(input4),data_ratings, data_products, surprise_model, 5).set_index('product_id')
+        list_products4 = recommend_products_collaborativefiltering(int(input4),df_ratings, df_products, surprise_model, 5).set_index('product_id')
         st.write(list_products4)
     if button4:
         user_id4 = df_ratings.sample(1)['user_id'].values[0]
         st.write('Đề xuất sản phẩm cho khách hàng id: ', user_id4)
-        list_products4 = recommend_products_collaborativefiltering(user_id4,data_ratings, data_products, surprise_model, 5).set_index('product_id')
+        list_products4 = recommend_products_collaborativefiltering(user_id4,df_ratings, df_products, surprise_model, 5).set_index('product_id')
         st.write(list_products4)
 
 
@@ -198,12 +200,12 @@ elif choice == 'Recommendation System Prediction':
         st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
         
         st.write("Sản phẩm tương tự")
-        list_products5 = recommendation_cosin(product_str, df_products, number_of_recommen=6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
+        list_products5 = recommendation_cosin(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
         st.write(list_products5)
     if button5:
         product_id5 = df_products.sample(1)['product_id'].values[0]
         st.write('Sản phẩm đang xem: ', df_products[df_products['product_id'] == product_id5]['product_name'].values[0])
         product_str = df_products[df_products['product_id'] == product_id5]['product_name'].values[0] + ' ' + df_products[df_products['product_id'] == product_id5]['description'].values[0]
         st.write("Sản phẩm tương tự")
-        list_products5 = recommendation_cosin(product_str, df_products, number_of_recommen=6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
+        list_products5 = recommendation_cosin(product_str, df_products, 6).set_index('product_id')[['product_name', 'price', 'description']][-5:]
         st.write(list_products5)
