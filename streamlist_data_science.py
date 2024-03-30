@@ -3,7 +3,18 @@ import pandas as pd
 from utility import *
 from joblib import load
 import io
-
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
+from underthesea import word_tokenize, pos_tag, sent_tokenize
+from gensim import corpora, models, similarities
+import re
+import pickle
+import regex
+import emoji
+import warnings
+warnings.filterwarnings('ignore')
 @st.cache_data
 def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
