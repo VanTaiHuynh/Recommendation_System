@@ -4,7 +4,7 @@ from utility import *
 from joblib import load
 import io
 
-@st.cache_data
+
 def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
 
@@ -17,20 +17,17 @@ def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_Co
     model = load(io.BytesIO(full_model_bytes))
     return model
 
-@st.cache_data
+
 def load_data_products():
     df_products = pd.read_csv('data/project2/Products_ThoiTrangNam_cleaned_part1.csv')
     df_products_2 = pd.read_csv('data/project2/Products_ThoiTrangNam_cleaned_part2.csv')
     df_products = pd.concat([df_products, df_products_2], axis=0)
     return df_products
-@st.cache_data
 def load_data_ratings():
     df_ratings = pd.read_csv('data/project2/Products_ThoiTrangNam_rating_cleaned.csv')
     return df_ratings
 
-surprise_model = load_SVD_model(2)
-df_products = load_data_products()
-df_ratings = load_data_ratings()    
+
 st.image('data/project2/images/topic.png', caption='Shoppe')
 st.title("Đồ Án Tốt Nghiệp Data Science - Machine Learning")
 st.write("""### Thành viên nhóm:
@@ -133,7 +130,9 @@ elif choice == 'Build Project':
 
 elif choice == 'Recommendation System Prediction':
     st.write("""# Recommendation System""")
-    
+    surprise_model = load_SVD_model(2)
+    df_products = load_data_products()
+    df_ratings = load_data_ratings()    
     df_users = df_ratings[['user_id','user']].drop_duplicates().set_index('user_id')
     st.write('### Dữ liệu Ratings demo')
     st.write(df_ratings.sample(5))
