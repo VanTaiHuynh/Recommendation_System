@@ -54,17 +54,21 @@ choice = st.sidebar.selectbox('Danh mục', menu)
 if choice == 'Home': 
     
     st.write("""# Đề tài: Xây dựng hệ thống đề xuất sản phẩm cho khách hàng cho sàn thương mại điện tử Shoppe""")   
+    st.write("""### Shoppe là một sàn thương mại điện tử lớn tại Việt Nam, cung cấp nhiều sản phẩm từ thời trang, mỹ phẩm, đồ gia dụng, điện tử, thực phẩm, văn phòng phẩm, đến dụng cụ thể thao, đồ chơi, sách vở, đồ chơi, đồ dùng cho thú cưng, v.v.""")
     st.write("""### Mục tiêu:
     - Xây dựng hệ thống đề xuất sản phẩm cho khách hàng
     - Dựa vào lịch sử tìm kiếm, rating, sản phẩm đang xem để đề xuất sản phẩm
     - Sử dụng các phương pháp: Collaborative Filtering, Content-based Cosine Filtering, Content-based Gensim""")
+    st.write("""### Recomendation System: là hệ thống giúp dự đoán sở thích của người dùng và đề xuất sản phẩm phù hợp với người dùng đó dựa vào lịch sử tìm kiếm, rating, sản phẩm đang xem, sản phẩm đã mua, v.v.""")
+    st.image('data/project2/images/RecommendationSystem.png', caption='Recommendation System')
+    st.write("""### Collaborative Filtering: là phương pháp đề xuất sản phẩm dựa vào rating của người dùng, để đề xuất sản phẩm cho người dùng mới, hệ thống sẽ dựa vào rating của người dùng khác để đề xuất sản phẩm cho người dùng mới""")
+    st.image('data/project2/images/CollaborativeFiltering.png', caption='Collaborative Filtering')
+    st.write("""### Content-based Cosine Filtering: là phương pháp đề xuất sản phẩm dựa vào nội dung của sản phẩm, để đề xuất sản phẩm cho người dùng, hệ thống sẽ dựa vào nội dung của sản phẩm để đề xuất sản phẩm cho người dùng""")
+    st.image('data/project2/images/ContentBasedCosineFiltering.png', caption='Content-based Cosine Filtering')
     st.write("""### Dữ liệu:
     - Dữ liệu gồm 2 bảng: 
         - Bảng Products: chứa thông tin sản phẩm
         - Bảng Ratings: chứa thông tin rating của người dùng đối với sản phẩm""")
-    st.write("""### Công nghệ:
-    - Ngôn ngữ lập trình: Python
-    - Thư viện: Pandas, Numpy, Matplotlib, Seaborn, Gensim, Scikit-learn, Streamlit""")
     st.write("""### Kết quả:
     - Đề xuất sản phẩm cho khách hàng vãng lai mới
     - Đề xuất sản phẩm cho khách hàng dựa vào lịch sử tìm kiếm
