@@ -140,7 +140,7 @@ def recommendation_gensim(content, data_products, number_of_similar_product = 5)
     score_to_list = top_score['score'][1:].tolist()
 
     products_result = data_products[data_products.index.isin(id_to_list)]
-    result = products_result[['product_id', 'product_name', 'price', 'description']]
+    result = products_result[['product_id', 'product_name', 'price']]
     result = result.assign(gensim_similarity=[score_to_list[id_to_list.index(i)] for i in result.index]).sort_values(by='gensim_similarity', ascending=False)
     return result
 def recommendation_cosin(content, data_products,  number_of_similar_product = 5):
@@ -154,15 +154,15 @@ def recommendation_cosin(content, data_products,  number_of_similar_product = 5)
     # calculate cosine similarity for view_product with all products
     cosine_similarities = cosine_similarity(view_product_tf, tfidf_matrix)
     data_products['cosine_similarity'] = cosine_similarities[0]
-    result = data_products[['product_id','product_name','price','description', 'cosine_similarity' ]].sort_values(by='cosine_similarity', ascending=False).head(number_of_similar_product)
+    result = data_products[['product_id','product_name','price','cosine_similarity' ]].sort_values(by='cosine_similarity', ascending=False).head(number_of_similar_product)
     return result
 
 def recommend_products_contentbasedfiltering(content, data_products, number_show_products = 5):
     df_recommend_gensim = recommendation_gensim(content, data_products, number_show_products)
     df_recommend_cosin = recommendation_cosin(content, data_products, number_show_products)
 
-    # Ta sẽ join 2 dataframe df_recommend_cosin và df_recommend_gensim theo product_id, product_name, price, description
-    df_recommend_join  = pd.merge(df_recommend_cosin, df_recommend_gensim, on=['product_id', 'product_name', 'price', 'description'], how='outer')
+    # Ta sẽ join 2 dataframe df_recommend_cosin và df_recommend_gensim theo product_id, product_name, price
+    df_recommend_join  = pd.merge(df_recommend_cosin, df_recommend_gensim, on=['product_id', 'product_name', 'price'], how='outer')
     df_recommend_join['max_cosin_gensim'] = df_recommend_join[['cosine_similarity', 'gensim_similarity']].max(axis=1)
     df_recommend_join = df_recommend_join.sort_values('max_cosin_gensim', ascending=False)
     # lấy x sản phẩm đầu tiên

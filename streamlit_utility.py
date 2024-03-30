@@ -55,5 +55,3 @@ def printProductDetail(product):
     st.markdown(f"**Product Name:** {product['product_name']}")
     st.markdown(f"**Category:** {product.get('category', 'N/A')}")
     st.markdown(f"**Price:** {product['price']}")
-    st.markdown(f"**Description:** {product.get('description', 'No description available')}")
-    st.write('*'*50)
