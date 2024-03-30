@@ -105,11 +105,65 @@ if choice == 'Overview':
 elif choice == 'Build Project':
     st.write("""# Xây dựng dự án""")
     st.write("""### 1. Tiền xử lý dữ liệu""")
-    st.write("""### 2. Xây dựng mô hình""")
-    st.write("""### 3. Đánh giá mô hình""")
-    st.write("""### 4. Triển khai mô hình""")
-    st.write("""### 5. Hệ thống đề xuất sản phẩm""")
-    st.write("""### 6. Tài liệu""")
+    st.write('### Dữ liệu Products: ')
+    st.write(df_products.head())
+    st.write("Tổng số dòng dữ liệu: ", df_products.shape[0])
+    st.write("Biểu đồ thống kê số lượng sản phẩm theo sub_category")
+    st.image('data/images/product_subcategory_EDA.png')
+    st.write("Biểu đồ thống kê theo trung bình Rating")
+    st.image('data/images/products_ratings_EDA.png')
+    st.write("""#### Nhận xét: 
+    - Số lương rating tập trung vào 4.5 và 5
+    - Có số lượng lớn sản phẩm có Rating = 0 (các sản phẩm chưa được đánh giá)""")
+
+
+
+    st.write('### Dữ liệu Users Ratings: ')
+    st.write(df_ratings.head())
+    st.write("Tổng số dòng dữ liệu: ", df_ratings.shape[0])
+    st.write("Biểu đồ thống kê số lượng ratings")
+    st.image('data/images/rating_count_EDA.png')
+    st.write("Biểu đồ thống kê theo trung bình Rating")
+    st.image('data/images/dupplicate_rating_EDA.png')
+    st.write("Số lượng user có cùng đánh giá cho 1 sản phẩm và 1 rating trên 3 lần: 694")
+    spam_user = ['Người dùng Shopee', 't*****1', 't*****2', 't*****3', 'n*****1', 't*****5', 't*****9', 'n*****3', 't*****7', 't*****0', 'n*****2', 't*****6', 'n*****9', 't*****8', 't*****4', 'h*****1', 'h*****2', 'h*****3', 'n*****4', 'n*****0', 'h*****4', 'n*****8', 'n*****7', 'n*****6', 'h*****9']
+    st.write("Một số User bị đánh dấu spam: ", spam_user[:5])
+    
+
+
+    st.write("""### 2. Xây dựng mô hình Collaborative Filtering""")
+    st.write('#### ALS Model')
+    st.write('Root Mean Square Error (RMSE) của mô hình ALS')
+    st.image('data/images/ALS_RMSE.png', caption='ALS RMSE')
+    st.write('#### Baseline Model')
+    st.write('Root Mean Square Error (RMSE) của mô hình SVD Baseline')
+    data_baseline = {
+    'Metric': ['RMSE (testset)', 'MAE (testset)', 'Fit time', 'Test time'],
+    'Fold 1': [0.8606, 0.5622, 2.35, 1.62],
+    'Fold 2': [0.8598, 0.5606, 2.23, 1.53],
+    'Fold 3': [0.8641, 0.5624, 2.66, 0.63],
+    'Fold 4': [0.8603, 0.5620, 2.47, 0.42],
+    'Fold 5': [0.8581, 0.5614, 2.52, 0.54],
+    'Mean': [0.8606, 0.5617, 2.45, 0.95],
+    'Std': [0.0020, 0.0007, 0.15, 0.52]}
+    df_baseline = pd.DataFrame(data_baseline)
+    st.write(df_baseline)
+    st.write("""### Nhận xét:  
+    - Mô hình SVD cho kết quả tốt hơn mô hình ALS với RMSE ~0.85
+    - Lựa chọn Surprise SVD model để xây dựng hệ thống đề xuất sản phẩm theo rating""")
+    st.write("""### 3. Xây dựng mô hình Content-based Cosine Filtering""")
+    st.write('#### Mô hình Content-based Cosine Filtering')
+    st.write('#### Thực hiện tìm kiếm sản phẩm cho từ khóa "đồ thể thao"')
+    st.image('data/images/gensim_predict_result.png', caption='Gensim result')
+    st.image('data/images/gensim_predict_wordcloud.png', caption='Content-based Cosine Filtering')
+    st.write('#### Mô hình Content-based Cosine Filtering')
+    st.write('#### Thực hiện tìm kiếm sản phẩm cho từ khóa "đồ thể thao"')
+    st.image('data/images/cosine_predict_result.png', caption='Cosine result')
+    st.image('data/images/cosine_predict_wordcloud.png', caption='Content-based Cosine Filtering')
+
+    st.write("""### Nhận xét: 
+    - Cả 2 Mô hình đều cho được kết quả tương đối khả quan và phù hợp với từ khóa tìm kiếm => kết hợp cả 2 model để đề xuất sản phẩm cho khách hàng dựa trên score của 2 model""")
+
 elif choice == 'Collaborative Filtering':
     st.write("""# Collaborative Filtering""")
     st.write("""- Collaborative Filtering: là phương pháp đề xuất sản phẩm dựa vào rating của người dùng, để đề xuất sản phẩm cho người dùng mới, hệ thống sẽ dựa vào rating của người dùng khác để đề xuất sản phẩm cho người dùng mới""")
@@ -151,8 +205,13 @@ elif choice == "ContentBase Filtering":
     st.write("""- Content-based Filtering: là phương pháp đề xuất sản phẩm dựa vào nội dung của sản phẩm, để đề xuất sản phẩm cho người dùng, hệ thống sẽ phân tích nội dung sản phẩm để đề xuất sản phẩm tương tự""")
     st.write("""### Dữ liệu: Bảng Products""")
     st.write("""### Mô hình: Cosine + Gensim""")
+    st.write("""Các bước thực hiện  
+    - Nhập từ khóa tìm kiếm => hệ thống sẽ đưa ra danh sách sản phẩm dựa trên từ khóa tìm kiếm  
+    - Từ sản phẩm tìm được, chọn tìm sản phẩm tương tự => hệ thống sẽ đưa ra danh sách sản phẩm tương tự với sản phẩm tìm được  """)
     st.write("""### Tìm kiếm sản phẩm""")
+    st.write("Gợi ý: áo thun, đồ thể thao, Áo thun tay dài form rộng, Áo Thun Nam Ngắn Tay Có Cổ ")
     searchStr = st.text_input('Tìm kiếm sản phẩm: ')
+    
     if searchStr:
         searchStr = searchStr.lower()
         list_products = recommend_products_contentbasedfiltering(searchStr, df_products, 5)
