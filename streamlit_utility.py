@@ -22,3 +22,38 @@ def printRecomProductList(products, width_image = 200, col=2):
         with cols[2]:
             # Add border for price column
             st.markdown(f"<div style='border:1px solid #ccc; padding: 5px;'>{row['price']}</div>", unsafe_allow_html=True)
+def printRecomProductListwithButton(products, width_image=200):
+    if products.empty:
+        st.write("No products to display.")
+        return
+    products['image'] = products['image'].fillna('https://via.placeholder.com/{0}'.format(width_image))
+    header_cols = st.columns([2, 3, 1, 1])
+    with header_cols[0]:
+        st.markdown("**Image**")
+    with header_cols[1]:
+        st.markdown("**Product Name**")
+    with header_cols[2]:
+        st.markdown("**Price**")
+    with header_cols[3]:
+        st.markdown("**Action**")
+
+    for _, row in products.iterrows():
+        cols = st.columns([2, 3, 1, 1])
+        with cols[0]:
+            st.image(row['image'], width=width_image)
+        with cols[1]:
+            st.markdown(f"**{row['product_name']}**")
+        with cols[2]:
+            st.markdown(f"**{row['price']}**")
+        with cols[3]:
+            if st.button("Tìm sản phẩm tương tự", key=f"details_{row['product_id']}"):
+                st.session_state['clicked_product'] = row['product_id']
+def printProductDetail(product):
+    st.write('*'*50)
+    st.write("## Product Details")
+    st.image(product['image'], width=200)
+    st.markdown(f"**Product Name:** {product['product_name']}")
+    st.markdown(f"**Category:** {product.get('category', 'N/A')}")
+    st.markdown(f"**Price:** {product['price']}")
+    st.markdown(f"**Description:** {product.get('description', 'No description available')}")
+    st.write('*'*50)

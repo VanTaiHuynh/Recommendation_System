@@ -141,21 +141,33 @@ elif choice == 'Collaborative Filtering':
             text = ' '.join(text for text in list_products['all_text'])
             wordcloud = WordCloud(max_words=50, height= 800, width = 1500,  background_color="black", colormap= 'viridis').generate(text)
             st.image(wordcloud.to_image(), caption='Wordcloud')
-            st.write(f"""### Đề xuất sản phẩm cho người dùng {selected_username}""")
 
             st.write("""### Danh sách sản phẩm đề xuất""")
             
             printRecomProductList(list_products, width_image=150)
-
-            
-
-    
-
     
 elif choice == "ContentBase Filtering": 
-    st.write("""# ContentBase Filtering""")
-    st.write("""### Content-based Cosine Filtering: là phương pháp đề xuất sản phẩm dựa vào nội dung của sản phẩm, hệ thống sẽ phân tích nội dung sản phẩm để đề xuất sản phẩm tương tự cho người dùng""")
+    st.write("""# Content-based Filtering""")
+    st.write("""- Content-based Filtering: là phương pháp đề xuất sản phẩm dựa vào nội dung của sản phẩm, để đề xuất sản phẩm cho người dùng, hệ thống sẽ phân tích nội dung sản phẩm để đề xuất sản phẩm tương tự""")
     st.write("""### Dữ liệu: Bảng Products""")
-    st.write("""### Mô hình: Cosine Similarity kết hợp với Gensim""")
-    st.write("""### Kết quả: Đề xuất sản phẩm tương tự cho người dùng""")
-    
+    st.write("""### Mô hình: Cosine + Gensim""")
+    st.write("""### Tìm kiếm sản phẩm""")
+    searchStr = st.text_input('Tìm kiếm sản phẩm: ')
+    if searchStr:
+        searchStr = searchStr.lower()
+        list_products = recommend_products_contentbasedfiltering(searchStr, df_products, 5)
+        list_products = converID2Products(list_products, df_products)
+        st.write("""### Danh sách sản phẩm""")
+        printRecomProductListwithButton(list_products, width_image=150)
+
+    if 'clicked_product' in st.session_state:        
+        product_name = df_products[df_products['product_id'] == st.session_state['clicked_product']]['product_name'].values[0]
+        text = df_products[df_products['product_id'] == st.session_state['clicked_product']]['all_text'].values[0]
+        list_products = recommend_products_contentbasedfiltering(text, df_products, 5)
+        list_products = converID2Products(list_products, df_products)
+        st.write("### Các sản phẩm tương tự với sản phẩm:  {0}".format(product_name))
+        printRecomProductList(list_products, width_image=150)
+
+
+
+

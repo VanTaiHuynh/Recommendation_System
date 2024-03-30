@@ -113,3 +113,62 @@ def recommend_products_collaborativefiltering(user_id, data_ratings, recommendat
 def converID2Products(list_products, data_products):
     #return dataframe 
     return data_products[data_products['product_id'].isin(list_products)]
+
+def recommendation_gensim(content, data_products, number_of_similar_product = 5): 
+    # load model 
+    tfidf = models.TfidfModel.load('models/ContentBaseFiltering/gensim/tfidf.model')
+    index = similarities.SparseMatrixSimilarity.load('models/ContentBaseFiltering/gensim/index.model')
+    dictionary = corpora.Dictionary.load('models/ContentBaseFiltering/gensim/dictionary.model')
+    # clean text truyền vào
+    view_product = clean_text(content).split()
+    # chuyển text thành vector
+    kw_vector = dictionary.doc2bow(view_product)
+    sim = index[tfidf[kw_vector]]
+    list_id = [] 
+    list_score = []
+    for i in range(len(sim)):
+        if sim[i] > 0:
+            list_id.append(i)
+            list_score.append(sim[i])
+
+    # tạo dataframe chứa id và score
+    df_result = pd.DataFrame({'id':list_id, 'score':list_score})
+
+    # sắp xếp theo score lấy x sản phẩm đề xuất
+    top_score = df_result.sort_values(by='score', ascending=False).head(number_of_similar_product+1)
+    id_to_list = top_score['id'][1:].tolist()
+    score_to_list = top_score['score'][1:].tolist()
+
+    products_result = data_products[data_products.index.isin(id_to_list)]
+    result = products_result[['product_id', 'product_name', 'price', 'description']]
+    result = result.assign(gensim_similarity=[score_to_list[id_to_list.index(i)] for i in result.index]).sort_values(by='gensim_similarity', ascending=False)
+    return result
+def recommendation_cosin(content, data_products,  number_of_similar_product = 5):
+    # load model 
+    tf = pickle.load(open('models/ContentBaseFiltering/cosine/tf.pkl', 'rb'))
+    #load tfidf_matrix 
+    tfidf_matrix = tf.transform(data_products.all_text)
+    # transform view_product_name to tfidf vector
+    view_product_name = clean_text(content)
+    view_product_tf = tf.transform([view_product_name])
+    # calculate cosine similarity for view_product with all products
+    cosine_similarities = cosine_similarity(view_product_tf, tfidf_matrix)
+    data_products['cosine_similarity'] = cosine_similarities[0]
+    result = data_products[['product_id','product_name','price','description', 'cosine_similarity' ]].sort_values(by='cosine_similarity', ascending=False).head(number_of_similar_product)
+    return result
+
+def recommend_products_contentbasedfiltering(content, data_products, number_show_products = 5):
+    df_recommend_gensim = recommendation_gensim(content, data_products, number_show_products)
+    df_recommend_cosin = recommendation_cosin(content, data_products, number_show_products)
+
+    # Ta sẽ join 2 dataframe df_recommend_cosin và df_recommend_gensim theo product_id, product_name, price, description
+    df_recommend_join  = pd.merge(df_recommend_cosin, df_recommend_gensim, on=['product_id', 'product_name', 'price', 'description'], how='outer')
+    df_recommend_join['max_cosin_gensim'] = df_recommend_join[['cosine_similarity', 'gensim_similarity']].max(axis=1)
+    df_recommend_join = df_recommend_join.sort_values('max_cosin_gensim', ascending=False)
+    # lấy x sản phẩm đầu tiên
+    df_recommend_products = df_recommend_join.head(number_show_products)
+    list_products = df_recommend_products['product_id'].tolist()
+    return list_products
+
+
+
