@@ -15,7 +15,9 @@ import regex
 import emoji
 import warnings
 warnings.filterwarnings('ignore')
-@st.cache_data
+
+
+@st.cache_resource
 def load_SVD_model(num_parts, prefix='models/project2/surprise/recommendation_CollaborativeFiltering_model_part_'):
     full_model_bytes = b''
 
