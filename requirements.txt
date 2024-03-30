@@ -1,11 +1,9 @@
 numpy
 pandas
-scikit-learn==1.3.2
+scikit-learn
 underthesea
 gensim
-scipy
 regex
 emoji
 streamlit
 joblib
-scikit-surprise
