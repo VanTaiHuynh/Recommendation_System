@@ -8,3 +8,4 @@ emoji
 streamlit
 joblib
 surprise
+wordcloud
