@@ -2,8 +2,12 @@ import pandas as pd
 import re
 import regex
 import pickle
-from underthesea import sent_tokenize, word_tokenize, pos_tag
-from gensim import corpora, models, similarities
+from underthesea import sent_tokenize
+from underthesea import word_tokenize
+from underthesea import pos_tag
+from gensim import corpora
+from gensim import models
+from gensim import similarities
 from sklearn.metrics.pairwise import cosine_similarity
 import emoji
 
